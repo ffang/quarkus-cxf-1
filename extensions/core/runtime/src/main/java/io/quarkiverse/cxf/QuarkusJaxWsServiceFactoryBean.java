@@ -1,13 +1,9 @@
 package io.quarkiverse.cxf;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import org.apache.cxf.common.i18n.Message;
 import org.apache.cxf.common.logging.LogUtils;
@@ -46,30 +42,6 @@ public class QuarkusJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
     public void reset() {
         super.reset();
         //wrapperClasses = null;
-    }
-
-    @Override
-    protected Set<Class<?>> getExtraClass() {
-        Set<Class<?>> classes = new HashSet<>();
-        if (wrapperClasses != null) {
-            classes.addAll(wrapperClasses);
-        }
-
-        XmlSeeAlso xmlSeeAlsoAnno = getServiceClass().getAnnotation(XmlSeeAlso.class);
-
-        if (xmlSeeAlsoAnno != null && xmlSeeAlsoAnno.value() != null) {
-            for (int i = 0; i < xmlSeeAlsoAnno.value().length; i++) {
-                Class<?> value = xmlSeeAlsoAnno.value()[i];
-                if (value == null) {
-                    LOG.log(Level.WARNING, "XMLSEEALSO_NULL_CLASS",
-                            new Object[] { getServiceClass().getName(), i });
-                } else {
-                    classes.add(value);
-                }
-
-            }
-        }
-        return classes;
     }
 
     @Override

@@ -33,10 +33,6 @@ public class MtomAwtResource {
     @CXFClient("imageServiceClient")
     ImageService imageServiceClient;
 
-    @Inject
-    @CXFClient("imageServiceClientWithWrappers")
-    ImageServiceWithWrappers imageServiceClientWithWrappers;
-
     @Path("/image/{clientKey}/{imageName}")
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
@@ -48,9 +44,7 @@ public class MtomAwtResource {
             case imageServiceClient:
                 response = imageServiceClient.uploadImage(ImageIO.read(in), imageName);
                 break;
-            case imageServiceClientWithWrappers:
-                response = imageServiceClientWithWrappers.uploadImage(ImageIO.read(in), imageName);
-                break;
+
             default:
                 throw new IllegalStateException("Unexpected " + ClientKey.class.getName() + ": " + clientKey.name());
         }
@@ -70,9 +64,7 @@ public class MtomAwtResource {
             case imageServiceClient:
                 image = imageServiceClient.downloadImage(imageName);
                 break;
-            case imageServiceClientWithWrappers:
-                image = imageServiceClientWithWrappers.downloadImage(imageName);
-                break;
+
             default:
                 throw new IllegalStateException("Unexpected " + ClientKey.class.getName() + ": " + clientKey.name());
         }
